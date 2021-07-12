@@ -1,6 +1,6 @@
 # opentap-sdk README
 
-This is the README for your extension "opentap-sdk". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "opentap-sdk". The
 
 ## Features
 
