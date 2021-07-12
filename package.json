@@ -2,6 +2,7 @@
   "name": "opentap-sdk",
   "displayName": "OpenTAP SDK",
   "description": "Manage OpenTAP Project for developer",
+  "publisher": "Keysight",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.58.0"
@@ -12,31 +13,56 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:opentap-sdk.newproject"
+    "onCommand:opentap-sdk.newproject",
+    "onCommand:opentap-sdk.test",
+    "onCommand:opentap-sdk.getPackage",
+    "onCommand:openttap-sdk.addProject",
+    "onCommand:opentap-sdk.progress"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
       "title": "OpenTAP SDK",
       "properties": {
-        "opentap.defaultProjectDirectory": {
+        "opentap.ProjectDirectory": {
           "type": "string",
           "default": "${DEFAULT}",
           "description": "The newly created project will be stored in this directory. ${DEFAULT} to store the project by default in the C:/User/{User}/OpenTAP/repo"
+        },
+        "opentap.PackageRepo": {
+          "type": "array",
+          "default": [
+            "https://packages.opentap.io/"
+          ],
+          "items": "string",
+          "description": "Tap Package Repository"
         }
       }
     },
     "commands": [
       {
         "command": "opentap-sdk.newproject",
-        "title": "OpenTAP: New Project"
+        "category": "OpenTAP",
+        "title": "New Project"
+      },
+      {
+        "command": "opentap-sdk.test",
+        "category": "OpenTAP",
+        "title": "Test",
+        "shortTitle": "OT:T"
+      },
+      {
+        "command": "opentap-sdk.progress",
+        "category": "OpenTAP",
+        "title": "progress",
+        "shortTitle": "progress"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
+    "compile": "rollup -c && webpack --mode production",
+    "watch": "concurrently \"rollup -c -w\" \"webpack --mode development --watch\"",
     "package": "webpack --mode production --devtool hidden-source-map",
     "test-compile": "tsc -p ./",
     "test-watch": "tsc -watch -p ./",
@@ -45,6 +71,10 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-typescript": "^8.2.1",
+    "@tsconfig/svelte": "^2.0.1",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.2.2",
     "@types/node": "14.x",
@@ -53,9 +83,15 @@
     "@types/xml2json": "^0.11.4",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "concurrently": "^6.2.0",
     "eslint": "^7.27.0",
     "glob": "^7.1.7",
     "mocha": "^8.4.0",
+    "rollup-plugin-svelte": "^7.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "svelte": "^3.38.3",
+    "svelte-check": "^2.2.2",
+    "svelte-preprocess": "^4.7.4",
     "ts-loader": "^9.2.2",
     "typescript": "^4.3.2",
     "vscode-test": "^1.5.2",
@@ -63,8 +99,6 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
-    "node-csproj-util": "^0.1.2",
-    "xml2js": "^0.4.23",
-    "xml2json": "^0.12.0"
+    "username": "^5.1.0"
   }
 }
